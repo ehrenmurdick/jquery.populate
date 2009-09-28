@@ -3,11 +3,13 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Populate</title>
     <link rel="stylesheet" href="demo.css" type="text/css" media="screen" charset="utf-8">
+    <script type="text/javascript" charset="utf-8" src="lib/jquery.js"></script>
     <script type="text/javascript" charset="utf-8" src="src/populate.jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="demo.js"></script>
   </head>
 
   <body>
-    <center><h1><a href="#">Pop!</a></h1></center>
+    <center><h1><a href="#" id="pop">Pop!</a></h1></center>
     <form action="#" method="post" accept-charset="utf-8">
       <fieldset id="name">
         <label for="username">username
@@ -50,7 +52,9 @@
 
         <label for="state">state
           <select name="state" id="state">
+            <option>choose</option>
             <option value="OH">Ohio</option>
+            <option value="CA">California</option>
           </select>
         </label>
       </fieldset>
@@ -60,7 +64,6 @@
           <textarea name="notes" rows="3" cols="40"></textarea>
         </label>
       </fieldset>
-
     
     
       <p><input type="submit" value="Continue &rarr;"></p>

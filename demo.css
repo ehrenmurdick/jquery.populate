@@ -1,0 +1,42 @@
+body {
+  padding: 50px;
+}
+
+h1 a {
+  font-size: 32px;
+  color: #777;
+}
+
+fieldset {
+  padding: 30px;
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 24px;
+  display: block;
+  width: 460px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+input, 
+select {
+  font-size: 24px;
+}
+
+label input, 
+label select, 
+label textarea {
+  position: absolute;
+  left: 150px;
+}
+
+label input {
+  width: 400px;
+}
+
+label textarea {
+  vertical-align: top;
+}
+

@@ -38,6 +38,7 @@ var Populate = {
 };
 
 Populate.Data = {
+  loremWord: ["Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "Aenean", "felis", "luctus", "blandit", "nec", "rutrum", "mi", "Vestibulum"],
   is: function(type) {
     return Populate.Data.dependsOn(type, function(thing) {
       return thing;
@@ -62,13 +63,40 @@ Populate.Data = {
       }
       return str;
     }
+  },
+  randomNumeral: function(size) {
+    return function() {
+      var str = "";
+      var i;
+      for(i=0;i<size;++i) {
+        str = str + [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].random();
+      }
+      return str;
+    }
+  },
+
+  lorem: function(words) {
+    return function() {
+      var i;
+      str = "";
+      for(i=0;i<words;++i) {
+        str = str + " " + Populate.getValue('loremWord');
+      }
+      return str;
+    }
   }
+
 };
 
 $.extend(Populate.Data, {
   firstName: ['Aaron', 'Bob', 'Steve', 'Hugh', 'Jon', 'Jessica', 'Thais', 'Amadeus', 'Wolfgang', 'Alabaster'],
   lastName: ['Hancock', 'Jass', 'Mozart'],
   domain: ['google.com', 'yahoo.com', 'msn.com'],
+  city: ['Delaware', 'Columbus', 'Athens', 'Roanoke', 'YourFace', 'Springfield'],
+  state: ['OH', 'CA', 'AR', 'NY', 'NC', 'NV', 'IN', 'IL', 'KY', 'TN', 'WV', 'VA', 'MI', 'WI'],
+  street: ['1st', '2nd', '3rd', '4th', '5th', 'Indianola', 'Copeland', 'Latta', 'Lafayette', 'Presidential', 'Palmer', 'High'],
+  streetEnding: ['Pkwy', 'Ave', 'St', 'Ln', 'Dr', 'Tr', 'Ct'],
+
   username: Populate.Data.dependsOn('firstName', function(name) {
     return name + Math.randInt(1000);
   }),
@@ -83,7 +111,13 @@ $.extend(Populate.Data, {
 
   password: 'password',
 
-  passwordConfirmation: Populate.Data.is('password')
+  passwordConfirmation: Populate.Data.is('password'),
+
+  address: function() {
+    return Populate.Data.randomNumeral(4)() + ' ' + Populate.getValue('street') + ' ' + Populate.getValue('streetEnding');
+  },
+
+  notes: Populate.Data.lorem(20)
 });
 
 $.fn.pop = function(kind) {

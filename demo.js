@@ -5,6 +5,6 @@ $.extend(Populate.Data, {
 
 $(function() {
   $('#pop').click(function() {
-    $('input').pop();
+    $('input, select, textarea').pop();
   });
 });

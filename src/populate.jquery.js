@@ -5,8 +5,10 @@ previous: {},
     if (Populate.Data[kind]) {
       if (typeof(Populate.Data[kind]) == 'function') {
         return Populate.previous[kind] = Populate.Data[kind](deferred);
-      } else {
+      } else if (typeof(Populate.Data[kind]) == 'object') {
         return Populate.previous[kind] = Populate.Data[kind].random();
+      } else {
+        return Populate.previous[kind] = Populate.Data[kind];
       }
     }
   },
@@ -70,7 +72,7 @@ $.extend(Populate.Data, {
     return 'http://' + domain;
   }),
 
-  password: ['password']
+  password: 'password'
 });
 
 $.fn.pop = function(kind) {

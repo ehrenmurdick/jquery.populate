@@ -1,7 +1,12 @@
 var Populate = {
   getValue: function(kind) {
-    return {firstName: 'Ehren',
-     lastName: 'Murdick'}[kind];
+    if (Populate.Data[kind]) {
+      if (typeof(Populate.Data[kind]) == 'function') {
+        return Populate.Data[kind]();
+      } else {
+        return Populate.Data[kind].random();
+      }
+    }
   },
 
   getName: function(element) {
@@ -14,6 +19,20 @@ var Populate = {
     return name.camelize();
   }
 };
+
+Populate.Data = {
+  firstName: ['Aaron', 'Bob', 'Steve', 'Hugh', 'Jon', 'Jessica', 'Thais', 'Amadeus', 'Wolfgang', 'Alabaster'],
+  lastName: ['Hancock', 'Jass', 'Mozart'],
+  domain: ['google.com', 'yahoo.com', 'msn.com'],
+  username: function() {
+    return Populate.getValue('firstName') +
+              Math.randInt(1000);
+  },
+  email: function() {
+    return Populate.getValue('username') + '@' + Populate.getValue('domain');
+  },
+  password: ['password']
+}
 
 $.fn.pop = function(kind) {
   return $(this).each(function() {
@@ -42,3 +61,17 @@ String.prototype.camelize = function() {
 
   return camelized;
 }
+
+
+
+Array.prototype.random = function() {
+  return this[Math.randInt(this.length)];
+}
+
+
+Math.randInt = function(size){
+  var rNum = Math.floor(Math.random()*size);
+
+  return rNum;
+}
+

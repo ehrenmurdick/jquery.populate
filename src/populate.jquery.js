@@ -1,10 +1,12 @@
 var Populate = {
-  getValue: function(kind) {
+previous: {},
+
+  getValue: function(kind, deferred) {
     if (Populate.Data[kind]) {
       if (typeof(Populate.Data[kind]) == 'function') {
-        return Populate.Data[kind]();
+        return Populate.previous[kind] = Populate.Data[kind](deferred);
       } else {
-        return Populate.Data[kind].random();
+        return Populate.previous[kind] = Populate.Data[kind].random();
       }
     }
   },
@@ -17,6 +19,19 @@ var Populate = {
     }
 
     return name.camelize();
+  },
+
+  populate: function(element, kind) {
+    element = $(element);
+    if (kind == undefined) kind = Populate.getName(element);
+    var value = Populate.getValue(kind);
+    if (value == '__defer__') {
+      setTimeout(function() {
+        element.val(Populate.getValue(kind, true));
+      }, 100);
+    } else {
+      element.val(value);
+    } 
   }
 };
 
@@ -28,20 +43,20 @@ Populate.Data = {
     return Populate.getValue('firstName') +
               Math.randInt(1000);
   },
-  email: function() {
-    return Populate.getValue('username') + '@' + Populate.getValue('domain');
+  email: function(deferred) {
+    var first = Populate.previous['firstName'];
+    if (first == undefined) {
+      if (!deferred) return '__defer__';
+      else first = Populate.getValue('firstname');
+    }
+    return first + '@' + Populate.getValue('domain');
   },
   password: ['password']
 }
 
 $.fn.pop = function(kind) {
   return $(this).each(function() {
-    if (kind == undefined) {
-      var type = Populate.getName(this);
-      $(this).val(Populate.getValue(type));
-    } else { 
-      $(this).val(Populate.getValue(kind));
-    }
+    Populate.populate(this, kind);
   });
 };
   

@@ -1,5 +1,5 @@
 var Populate = {
-previous: {},
+  previous: {},
 
   getValue: function(kind, deferred) {
     if (Populate.Data[kind]) {

@@ -36,23 +36,42 @@ previous: {},
 };
 
 Populate.Data = {
+  is: function(type) {
+    return Populate.Data.dependsOn(type, function(thing) {
+      return thing;
+    });
+  },
+  dependsOn: function(type, getter) {
+    return function(deferred) {
+      var dep = Populate.previous[type];
+      if (dep == undefined) {
+        if (!deferred) return '__defer__';
+        else dep = Populate.getValue(type);
+      }
+      return getter(dep);
+    }
+  }
+};
+
+var dependsOn = Populate.Data.dependsOn;
+$.extend(Populate.Data, {
   firstName: ['Aaron', 'Bob', 'Steve', 'Hugh', 'Jon', 'Jessica', 'Thais', 'Amadeus', 'Wolfgang', 'Alabaster'],
   lastName: ['Hancock', 'Jass', 'Mozart'],
   domain: ['google.com', 'yahoo.com', 'msn.com'],
-  username: function() {
-    return Populate.getValue('firstName') +
-              Math.randInt(1000);
-  },
-  email: function(deferred) {
-    var first = Populate.previous['firstName'];
-    if (first == undefined) {
-      if (!deferred) return '__defer__';
-      else first = Populate.getValue('firstname');
-    }
-    return first + '@' + Populate.getValue('domain');
-  },
+  username: dependsOn('firstName', function(name) {
+    return name + Math.randInt(1000);
+  }),
+
+  email: dependsOn('firstName', function(theName) {
+    return theName + '@' + Populate.getValue('domain');
+  }),
+
+  website: dependsOn('domain', function(domain) {
+    return 'http://' + domain;
+  }),
+
   password: ['password']
-}
+});
 
 $.fn.pop = function(kind) {
   return $(this).each(function() {

@@ -52,27 +52,38 @@ Populate.Data = {
       }
       return getter(dep);
     }
+  },
+  randomAlnum: function(size) {
+    return function() {
+      var str = "";
+      var i;
+      for (i=0;i<size;++i) {
+        str  = str + ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9].random();
+      }
+      return str;
+    }
   }
 };
 
-var dependsOn = Populate.Data.dependsOn;
 $.extend(Populate.Data, {
   firstName: ['Aaron', 'Bob', 'Steve', 'Hugh', 'Jon', 'Jessica', 'Thais', 'Amadeus', 'Wolfgang', 'Alabaster'],
   lastName: ['Hancock', 'Jass', 'Mozart'],
   domain: ['google.com', 'yahoo.com', 'msn.com'],
-  username: dependsOn('firstName', function(name) {
+  username: Populate.Data.dependsOn('firstName', function(name) {
     return name + Math.randInt(1000);
   }),
 
-  email: dependsOn('firstName', function(theName) {
+  email: Populate.Data.dependsOn('firstName', function(theName) {
     return theName + '@' + Populate.getValue('domain');
   }),
 
-  website: dependsOn('domain', function(domain) {
+  website: Populate.Data.dependsOn('domain', function(domain) {
     return 'http://' + domain;
   }),
 
-  password: 'password'
+  password: 'password',
+
+  passwordConfirmation: Populate.Data.is('password')
 });
 
 $.fn.pop = function(kind) {

@@ -66,12 +66,8 @@ Populate.Data = {
   },
   randomNumeral: function(size) {
     return function() {
-      var str = "";
-      var i;
-      for(i=0;i<size;++i) {
-        str = str + [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].random();
-      }
-      return str;
+      var range = Math.pow(10, size) - Math.pow(10, size - 1) - 1;
+      return Math.randInt(range) + Math.pow(10, size - 1);
     }
   },
 

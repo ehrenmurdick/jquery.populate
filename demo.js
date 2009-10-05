@@ -1,10 +1,10 @@
-$.extend(Populate.Data, {
-  confirmation: Populate.Data.is('password'),
+$.populate.registerValues({
+  confirmation: $.populate.data.is('password'),
   ccNum: '0000000000000000'
 });
 
 $(function() {
   $('#pop').click(function() {
-    $('input, select, textarea').pop();
+    $('input, select, textarea').populate();
   });
 });

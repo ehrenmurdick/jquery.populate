@@ -1,14 +1,20 @@
-var Populate = {
+(function() {
+
+$.populate = {
   previous: {},
 
+  registerValues: function(obj) {
+    $.extend($.populate.data, obj);
+  },
+
   getValue: function(kind, deferred) {
-    if (Populate.Data[kind]) {
-      if (typeof(Populate.Data[kind]) == 'function') {
-        return Populate.previous[kind] = Populate.Data[kind](deferred);
-      } else if (typeof(Populate.Data[kind]) == 'object') {
-        return Populate.previous[kind] = Populate.Data[kind].random();
+    if ($.populate.data[kind]) {
+      if (typeof($.populate.data[kind]) == 'function') {
+        return $.populate.previous[kind] = $.populate.data[kind](deferred);
+      } else if (typeof($.populate.data[kind]) == 'object') {
+        return $.populate.previous[kind] = $.populate.data[kind].random();
       } else {
-        return Populate.previous[kind] = Populate.Data[kind];
+        return $.populate.previous[kind] = $.populate.data[kind];
       }
     }
   },
@@ -25,11 +31,11 @@ var Populate = {
 
   populate: function(element, kind) {
     element = $(element);
-    if (kind == undefined) kind = Populate.getName(element);
-    var value = Populate.getValue(kind);
+    if (kind == undefined) kind = $.populate.getName(element);
+    var value = $.populate.getValue(kind);
     if (value == '__defer__') {
       setTimeout(function() {
-        element.val(Populate.getValue(kind, true));
+        element.val($.populate.getValue(kind, true));
       }, 100);
     } else {
       element.val(value);
@@ -37,19 +43,19 @@ var Populate = {
   }
 };
 
-Populate.Data = {
+$.populate.data = {
   loremWord: ["Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "Aenean", "felis", "luctus", "blandit", "nec", "rutrum", "mi", "Vestibulum"],
   is: function(type) {
-    return Populate.Data.dependsOn(type, function(thing) {
+    return $.populate.data.dependency(type, function(thing) {
       return thing;
     });
   },
-  dependsOn: function(type, getter) {
+  dependency: function(type, getter) {
     return function(deferred) {
-      var dep = Populate.previous[type];
+      var dep = $.populate.previous[type];
       if (dep == undefined) {
         if (!deferred) return '__defer__';
-        else dep = Populate.getValue(type);
+        else dep = $.populate.getValue(type);
       }
       return getter(dep);
     }
@@ -76,7 +82,7 @@ Populate.Data = {
       var i;
       str = "";
       for(i=0;i<words;++i) {
-        str = str + " " + Populate.getValue('loremWord');
+        str = str + " " + $.populate.getValue('loremWord');
       }
       return str;
     }
@@ -84,43 +90,38 @@ Populate.Data = {
 
 };
 
-$.extend(Populate.Data, {
+$.extend($.populate.data, {
   firstName: ['Aaron', 'Bob', 'Steve', 'Hugh', 'Jon', 'Jessica', 'Thais', 'Amadeus', 'Wolfgang', 'Alabaster', 'Joe', 'Conan', 'Jim', 'Rod', 'The'],
   lastName: ['Hancock', 'Jass', 'Mozart', 'Stewart', 'Monkey', 'Town', 'Dumass', 'Nümminen', 'Bearnt', 'Distad', 'Barker', 'O\'Brien', 'Shadow'],
   domain: ['google.com', 'yahoo.com', 'msn.com'],
-  city: ['Delaware', 'Columbus', 'Athens', 'Roanoke', 'YourFace', 'Springfield'],
+  city: ['Delaware', 'Columbus', 'Athens', 'Roanoke', 'Springfield'],
   state: ['OH', 'CA', 'AR', 'NY', 'NC', 'NV', 'IN', 'IL', 'KY', 'TN', 'WV', 'VA', 'MI', 'WI'],
   street: ['1st', '2nd', '3rd', '4th', '5th', 'Indianola', 'Copeland', 'Latta', 'Lafayette', 'Presidential', 'Palmer', 'High'],
   streetEnding: ['Pkwy', 'Ave', 'St', 'Ln', 'Dr', 'Tr', 'Ct'],
 
-  username: Populate.Data.dependsOn('firstName', function(name) {
+  username: $.populate.data.dependency('firstName', function(name) {
     return name + Math.randInt(1000);
   }),
 
-  email: Populate.Data.dependsOn('firstName', function(theName) {
-    return theName + '@' + Populate.getValue('domain');
+  email: $.populate.data.dependency('firstName', function(theName) {
+    return theName + '@' + $.populate.getValue('domain');
   }),
 
-  website: Populate.Data.dependsOn('domain', function(domain) {
+  website: $.populate.data.dependency('domain', function(domain) {
     return 'http://' + domain;
   }),
 
   password: 'password',
 
-  passwordConfirmation: Populate.Data.is('password'),
+  passwordConfirmation: $.populate.data.is('password'),
 
   address: function() {
-    return Populate.Data.randomNumeral(4)() + ' ' + Populate.getValue('street') + ' ' + Populate.getValue('streetEnding');
+    return $.populate.data.randomNumeral(4)() + ' ' + $.populate.getValue('street') + ' ' + $.populate.getValue('streetEnding');
   },
 
-  notes: Populate.Data.lorem(20)
+  notes: $.populate.data.lorem(20)
 });
 
-$.fn.pop = function(kind) {
-  return $(this).each(function() {
-    Populate.populate(this, kind);
-  });
-};
   
   
   
@@ -152,3 +153,11 @@ Math.randInt = function(size){
   return rNum;
 }
 
+
+$.fn.populate = function(kind) {
+  return $(this).each(function() {
+    $.populate.populate(this, kind);
+  });
+};
+
+})(jQuery);

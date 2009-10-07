@@ -1,3 +1,11 @@
+/*
+ *   jquery.populate version 1.1
+ *   (c)) 2009 Ehren Murdick
+ *
+ *---------------------------------*/
+
+
+
 (function() {
 
 $.populate = {

@@ -18,25 +18,44 @@ label {
   width: 460px;
   position: relative;
   margin-bottom: 20px;
+  height: 2em;
+}
+
+label span {
+  position: absolute;
+  top: 0.37em;
+  left: 0.3em;
+  padding: 0.2em;
+  padding-left: 0.3em;
+  width: 5.8em;
+  font-size: 0.7em;
+  border-right: 1px solid #555;
+  color: #555;
 }
 
 input, 
 select {
-  font-size: 24px;
-}
-
-label input, 
-label select, 
-label textarea {
-  position: absolute;
-  left: 150px;
+  font-size: 1em;
+  color: #222;
 }
 
 label input {
-  width: 400px;
+  width: 20em;
+  position: absolute;
+  padding-left: 5.2em;
+  top: 0;
+  left: 0;
 }
+
+
 
 label textarea {
   vertical-align: top;
+  padding-left: 10.5em;
+  padding-top: 0.2em;
+}
+
+label.notes span {
+  height: 1.7em;
 }
 

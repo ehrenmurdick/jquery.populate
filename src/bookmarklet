@@ -170,4 +170,4 @@ $.fn.populate = function(kind) {
   });
 };
 
-})(jQuery);
+})();

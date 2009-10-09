@@ -38,6 +38,7 @@ I won't stop you!
 
 
 h3. What if my new field depends on the value of another field? 
+
 I want the username to be the first name plus a number, or I want 
 the password confirmation to be equal to the password, for example. 
 (Both of these examples are already in the plugin)

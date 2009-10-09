@@ -83,7 +83,7 @@ $.populate.data = {
   randomNumeral: function(size) {
     return function() {
       var range = Math.pow(10, size) - Math.pow(10, size - 1) - 1;
-      return Math.randInt(range) + Math.pow(10, size - 1);
+      return Math.randomInt(range) + Math.pow(10, size - 1);
     }
   },
 
@@ -110,7 +110,7 @@ $.extend($.populate.data, {
   streetEnding: ['Pkwy', 'Ave', 'St', 'Ln', 'Dr', 'Tr', 'Ct'],
 
   username: $.populate.data.dependency('firstName', function(name) {
-    return name + Math.randInt(1000);
+    return name + Math.randomInt(1000);
   }),
 
   email: $.populate.data.dependency('firstName', function(theName) {
@@ -153,11 +153,11 @@ String.prototype.camelize = function() {
 
 
 Array.prototype.random = function() {
-  return this[Math.randInt(this.length)];
+  return this[Math.randomInt(this.length)];
 }
 
 
-Math.randInt = function(size){
+Math.randomInt = function(size){
   var rNum = Math.floor(Math.random()*size);
 
   return rNum;

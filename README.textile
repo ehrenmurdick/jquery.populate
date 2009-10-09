@@ -46,7 +46,7 @@ the password confirmation to be equal to the password, for example.
 <pre><code>
   $.populate.registerValues({
     username: $.populate.dependency('firstName', function(firstname) {
-      return firstname + Math.randInt(100);
+      return firstname + Math.randomInt(100);
     }),
     passwordConfirmation: $.populate.is('password')
   });

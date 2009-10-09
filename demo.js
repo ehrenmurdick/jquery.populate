@@ -3,7 +3,7 @@ $.populate.registerValues({
   favoriteNumber: 42,
   username: $.populate.data.dependency('firstName', function(name) {
     if (Math.random() > 0.5) {
-      return name + Math.randInt(100);
+      return name + Math.randomInt(100);
     } else {
       return name;
     }

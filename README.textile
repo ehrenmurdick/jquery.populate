@@ -1,1 +1,57 @@
 h1. jquery.populate
+
+
+Manual testing your web app is a pain when you have lots of forms which need to be filled in. Not anymore!
+
+
+h3. Usage
+
+<pre><code>
+  $('input').populate();
+</code></pre>
+
+That was easy! Inputs with a name containing 'first_name' will be filled in with a random first name, etc.
+
+
+h3. What if I want to add a new field type?
+
+<pre><code>
+  $.populate.registerValues({
+    favoriteColor: ['red', 'green', 'blue']
+  });
+</code></pre>
+
+Now favorite_color inputs will be filled in with a random color choice from ['red', 'green', 'blue']
+
+
+h3. I want to write a function to generate my field value
+
+I won't stop you!
+
+<pre><code>
+  $.populate.registerValues({
+    favoriteColor: function() {
+      return 'red';
+    }
+  });
+</code></pre>
+
+
+h3. What if my new field depends on the value of another field? 
+I want the username to be the first name plus a number, or I want 
+the password confirmation to be equal to the password, for example. 
+(Both of these examples are already in the plugin)
+
+<pre><code>
+  $.populate.registerValues({
+    username: $.populate.dependency('firstName', function(firstname) {
+      return firstname + Math.randInt(100);
+    }),
+    passwordConfirmation: $.populate.is('password')
+  });
+</code></pre>
+
+Easy-peasy.
+
+
+Check demo.html/css/js for more examples.
